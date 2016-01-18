@@ -123,7 +123,7 @@ public class ContentLoaderComponent
                 logger.debug(nodeService.getProperty(root_folder, ContentModel.PROP_NAME));
                 for (String i: path) {
                     logger.debug("cm:Name " + i);
-                    root_folder = this.createDocument(root_folder, i, "", objects.get("root"));
+                    root_folder = this.createDocument(root_folder, i, objects.get("root"));
                     logger.debug(nodeService.getProperty(root_folder, ContentModel.PROP_NAME));
                 }
             } else {
@@ -147,19 +147,20 @@ public class ContentLoaderComponent
         logger.debug("parseNode");
         if (Node.ELEMENT_NODE == node.getNodeType() && node.getNodeName().equals("node")) {
             Element tmpEl = (Element) node;
-            logger.debug(tmpEl.getNodeName() + "; name: " + tmpEl.getAttribute("name") + "; object: " + tmpEl.getAttribute("object") + "; count: " + tmpEl.getAttribute("count") + "; content: " + tmpEl.getAttribute("content"));
+            logger.debug(tmpEl.getNodeName() + "; name: " + tmpEl.getAttribute("name") + "; object: " + tmpEl.getAttribute("object") + "; count: " + tmpEl.getAttribute("count"));
             int count = Integer.parseInt(tmpEl.getAttribute("count"));
-            boolean content = Boolean.getBoolean(tmpEl.getAttribute("content"));
             if (count > 0) {
                 logger.debug(Integer.toString(count) + " - number.");
-                for (int j = 0; j < count; ++j) {
-                    String contentType = "";
-                    if (content) {
-                        contentType = "plainText";
-                    }
-                    NodeRef tmp = this.createDocument(parent, tmpEl.getAttribute("name") + Integer.toString(j), contentType, objects.get(tmpEl.getAttribute("object")));
+                NodeRef tmp1 = this.createDocument(parent, tmpEl.getAttribute("name"), objects.get(tmpEl.getAttribute("object")));
+                logger.debug(nodeService.getProperty(tmp1, ContentModel.PROP_NAME));
+                NodeList nodes = tmpEl.getChildNodes();
+                for (int i = 0; i < nodes.getLength(); ++i) {
+                    parseNode(tmp1, nodes.item(i));
+                }
+                for (int j = 1; j < count; ++j) {
+                    NodeRef tmp = this.createDocument(parent, tmpEl.getAttribute("name") + " " + Integer.toString(j), objects.get(tmpEl.getAttribute("object")));
                     logger.debug(nodeService.getProperty(tmp, ContentModel.PROP_NAME));
-                    NodeList nodes = tmpEl.getChildNodes();
+                    nodes = tmpEl.getChildNodes();
                     for (int i = 0; i < nodes.getLength(); ++i) {
                         parseNode(tmp, nodes.item(i));
                     }
@@ -238,7 +239,7 @@ public class ContentLoaderComponent
      * @param cmname - new node name
      * @return NodeRef of new document
      */
-    public NodeRef createDocument(NodeRef parent, String cmname, String contentType, RepoObject object)
+    public NodeRef createDocument(NodeRef parent, String cmname, RepoObject object)
     {
         logger.debug("createDocument");
 
@@ -256,11 +257,11 @@ public class ContentLoaderComponent
         res = fileFolderService.create(parent, cmname, object.getType()).getNodeRef();
 
         // TODO here will be many types
-        if (!contentType.equals("")) {
+        if (object.hasContent()) {
             ContentWriter writer = this.contentService.getWriter(res, ContentModel.PROP_CONTENT, true);
             writer.setMimetype(MimetypeMap.MIMETYPE_TEXT_PLAIN);
             writer.setEncoding("UTF-8");
-            writer.putContent(genPlainText(ThreadLocalRandom.current().nextInt(100, 100000 + 1)));
+            writer.putContent(genPlainText(ThreadLocalRandom.current().nextInt(object.getMinSize(), object.getMaxSize() + 1)));
         }
         // TODO null check
         //logger.debug("created: " + nodeService.getProperty(res, ContentModel.PROP_NAME));

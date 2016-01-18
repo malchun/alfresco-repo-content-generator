@@ -4,6 +4,7 @@ import org.apache.commons.el.parser.ParseException;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -34,12 +35,19 @@ public class ObjectsConfigParser {
                 if (org.w3c.dom.Node.ELEMENT_NODE == objects.item(i).getNodeType()) {
                     Element eltmp = (Element) objects.item(i);
 
-                    repoObjects.put(eltmp.getAttribute("id"),
-                            new RepoObject(
+                    RepoObject tmp = new RepoObject(
                                 eltmp.getAttribute("id"),
                                 eltmp.getElementsByTagName("type").item(0).getTextContent()
-                            )
+                            );
+                    if (eltmp.getElementsByTagName("content").getLength() > 0) {
+                        Element content = (Element) eltmp.getElementsByTagName("content").item(0);
+                        tmp.addContentProps(content.getElementsByTagName("format").item(0).getTextContent(),
+                                Integer.parseInt(content.getElementsByTagName("minTextSize").item(0).getTextContent()),
+                                Integer.parseInt(content.getElementsByTagName("maxTextSize").item(0).getTextContent())
                         );
+                    }
+
+                    repoObjects.put(eltmp.getAttribute("id"), tmp);
                 }
             }
 
