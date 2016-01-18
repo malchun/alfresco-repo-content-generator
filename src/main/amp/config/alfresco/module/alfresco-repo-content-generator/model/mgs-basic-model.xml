@@ -1,0 +1,1453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.alfresco.org/model/dictionary/1.0" name="mgs:mgs-basic-model">
+	<imports>
+		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+	</imports>
+	<namespaces>
+		<namespace prefix="mgs" uri="http://www.mos-gorsud.ru/models/basic"/>
+	</namespaces>
+	<types>
+		<!-- Базовый тип дела -->
+		<type name="mgs:case">
+			<parent>cm:folder</parent>
+		</type>
+		<!-- Гражданское дело -->
+		<type name="mgs:civilcase">
+			<title>Гражданское дело</title>
+			<parent>mgs:case</parent>
+			<properties>
+				<property name="mgs:civil-category">
+					<title>Категория дела по основному требованию</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:civil-type">
+					<title>Тип производства</title>
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:civil-type-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>По делам, возникающим из публичных правоотношений</value>
+									<value>Исковое</value>
+									<value>Приказное</value>
+									<value>Особое</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<!-- Сущность основного требования -->
+				<property name="mgs:civil-substance">
+					<type>d:text</type>
+				</property>
+				<!-- Дата вступления в силу -->
+				<property name="mgs:civil-effective-date">
+					<type>d:date</type>
+				</property>
+				<!-- Текущая инстанция -->
+				<property name="mgs:civil-current">
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:civil-current-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>1-я инстанция</value>
+									<value>2-я инстанция</value>
+									<value>3-я инстанция</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<!-- Уникальный идентификатор дела в ССД в суде 1-ой инстанции -->
+				<property name="mgs:civil-ssduid1">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 1-ой инстанции -->
+				<property name="mgs:civil-regdate1">
+					<type>d:date</type>
+				</property>
+				<!-- Номер дела в суде 1-ой инстанции -->
+				<property name="mgs:civil-caseid1">
+					<type>d:text</type>
+				</property>
+				<!-- Суд в 1-ой инстанции -->
+				<property name="mgs:civil-court1">
+					<type>d:text</type>
+				</property>
+				<!-- Первичный документ -->
+				<property name="mgs:civil-primary1">
+					<type>d:boolean</type>
+				</property>
+				<!-- Дата решения суда 1-ой инстанции -->
+				<property name="mgs:civil-resdate1">
+					<type>d:date</type>
+				</property>
+				<!-- Решение в суде 1-ой инстанции -->
+				<property name="mgs:civil-res1">
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:civil-res1-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>1</value>
+									<value>2</value>
+									<value>3</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<!-- Основание решения в суде 1-ой инстанции -->
+				<property name="mgs:civil-resbase1">
+					<type>d:text</type>
+				</property>
+				<!-- Решение кассационной инстанции по решению суда 1-ой инстанции -->
+				<property name="mgs:civil-casresforres1">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения кассационной инстанции по решению суда 1-ой инстанции -->
+				<property name="mgs:civil-casresbaseforres1">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС в суде 1-ой инстанции -->
+				<property name="mgs:civil-link1">
+					<type>d:text</type>
+				</property>
+				</properties>
+		</type>
+		<!-- Гражданское дело - 2-ая инстанция -->
+		<type name="mgs:civilcase2">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор дела в ССД в суде 2-ой инстанции -->
+				<property name="mgs:civil-ssduid2">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 2-ой инстанции -->
+				<property name="mgs:civil-regdate2">
+					<type>d:date</type>
+				</property>
+				<!-- Номер дела в суде 2-ой инстанции -->
+				<property name="mgs:civil-caseid2">
+					<type>d:text</type>
+				</property>
+				<!-- Суд во 2-ой инстанции -->
+				<property name="mgs:civil-court2">
+					<type>d:text</type>
+				</property>
+				<!-- Дата решения суда 2-ой инстанции -->
+				<property name="mgs:civil-resdate2">
+					<type>d:date</type>
+				</property>
+				<!-- Решение в суде 2-ой инстанции -->
+				<property name="mgs:civil-res2">
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:civil-res2-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>1</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<!-- Основание решения в суде 2-ой инстанции -->
+				<property name="mgs:civil-resbase2">
+					<type>d:text</type>
+				</property>
+				<!-- Решение кассационной инстанции по решению суда 2-ой инстанции -->
+				<property name="mgs:civil-casresforres2">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения кассационной инстанции по решению суда 2-ой инстанции -->
+				<property name="mgs:civil-casresbaseforres2">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС в суде 2-ой инстанции -->
+				<property name="mgs:civil-link2">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Гражданское дело - 3-я инстанция -->
+		<type name="mgs:civilcase3">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор дела в ССД в суде 3-ей инстанции -->
+				<property name="mgs:civil-ssduid3">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 3-ей инстанции -->
+				<property name="mgs:civil-regdate3">
+					<type>d:date</type>
+				</property>
+				<!-- Номер дела в суде 3-ей инстанции -->
+				<property name="mgs:civil-caseid3">
+					<type>d:text</type>
+				</property>
+				<!-- Суд во 3-ей инстанции -->
+				<property name="mgs:civil-court3">
+					<type>d:text</type>
+				</property>
+				<!-- Дата решения суда 3-ей инстанции -->
+				<property name="mgs:civil-resdate3">
+					<type>d:date</type>
+				</property>
+				<!-- Ссылка на АИС в суде 3-ей инстанции -->
+				<property name="mgs:civil-link3">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		
+		<!-- Уголовное дело -->
+		<type name="mgs:criminalcase">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Следственный номер -->
+				<property name="mgs:criminal-number">
+					<type>d:text</type>
+				</property>
+				<!-- Основная статья обвинения -->
+				<property name="mgs:criminal-indictment">
+					<type>d:text</type>
+				</property>
+				<!-- Предыдущее рассмотрение дела в суде 1-ой инстанции -->
+				<property name="mgs:criminal-prevreview">
+					<type>d:text</type>
+				</property>
+				<!-- Текущая инстанция -->
+				<property name="mgs:criminal-current">
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:criminal-current-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>1-я инстанция</value>
+									<value>2-я инстанция</value>
+									<value>3-я инстанция</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<!-- Уникальный идентификатор дела в ССД в суде 1-ой инстанции -->
+				<property name="mgs:criminal-ssduid1">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 1-ой инстанции -->
+				<property name="mgs:criminal-regdate1">
+					<type>d:date</type>
+				</property>
+				<!-- Номер дела в суде 1-ой инстанции -->
+				<property name="mgs:criminal-caseid1">
+					<type>d:text</type>
+				</property>
+				<!-- Суд в 1-ой инстанции -->
+				<property name="mgs:criminal-court1">
+					<type>d:text</type>
+				</property>
+				<!-- Признаки в суде 1-ой инстанции -->
+				<property name="mgs:criminal-flags1">
+					<type>d:text</type>
+					<default>Не выбрано</default>
+					<constraints>
+						<constraint name="mgs:criminal-flags1-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Рассмотрение судом присяжных</value>
+									<value>Особый порядок судебного разбирательства при согласии обвиняемого с предъявленным ему обвинением (гл.40 УПК РФ)</value>
+									<value>Особый порядок судебного разбирательства при заключении досудебного соглашения о сотрудничестве (гл.40.1 УПК РФ)</value>
+									<value>Не выбрано</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<!-- Ссылка на АИС в суде 1-ой инстанции -->
+				<property name="mgs:criminal-link1">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Уголовное дело - 2-ая инстанция -->
+		<type name="mgs:criminalcase2">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор дела в ССД в суде 2-ой инстанции -->
+				<property name="mgs:criminal-ssduid2">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 2-ой инстанции -->
+				<property name="mgs:criminal-regdate2">
+					<type>d:date</type>
+				</property>
+				<!-- Номер дела в суде 2-ой инстанции -->
+				<property name="mgs:criminal-caseid2">
+					<type>d:text</type>
+				</property>
+				<!-- Суд во 2-ой инстанции -->
+				<property name="mgs:criminal-court2">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС в суде 2-ой инстанции -->
+				<property name="mgs:criminal-link2">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Уголовное дело - 3-я инстанция -->
+		<type name="mgs:criminalcase3">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор дела в ССД в суде 3-ей инстанции -->
+				<property name="mgs:criminal-ssduid3">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 3-ей инстанции -->
+				<property name="mgs:criminal-regdate3">
+					<type>d:date</type>
+				</property>
+				<!-- Номер дела в суде 3-ей инстанции -->
+				<property name="mgs:criminal-caseid3">
+					<type>d:text</type>
+				</property>
+				<!-- Суд во 3-ей инстанции -->
+				<property name="mgs:criminal-court3">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС в суде 3-ей инстанции -->
+				<property name="mgs:criminal-link3">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+
+		<!-- Дело об административном правонарушении -->
+		<type name="mgs:admoffcase">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Сущность -->
+				<property name="mgs:admoff-substance">
+					<type>d:text</type>
+				</property>
+				<!-- Орган досудебной подготовки -->
+				<property name="mgs:admoff-pretrial">
+					<type>d:text</type>
+				</property>
+				<!-- № протокола об административном правонарушении -->
+				<property name="mgs:admoff-protocol">
+					<type>d:text</type>
+				</property>
+				<!-- Привлекаемое лицо -->
+				<property name="mgs:admoff-person">
+					<type>d:text</type>
+				</property>
+				<!-- Предыдущее рассмотрение дела 1-ой инстанции -->
+				<property name="mgs:admoff-prevreview">
+					<type>d:text</type>
+				</property>
+				<!-- Статья КоАП -->
+				<property name="mgs:admoff-koap">
+					<type>d:text</type>
+				</property>
+				<!-- Текущая инстанция -->
+				<property name="mgs:admoff-current">
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:admoff-current-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>1-я инстанция</value>
+									<value>1-й пересмотр</value>
+									<value>2-й пересмотр</value>
+									<value>Надзор</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<!-- Уникальный идентификатор дела в ССД в суде 1-ой инстанции -->
+				<property name="mgs:admoff-ssduid1">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 1-ой инстанции -->
+				<property name="mgs:admoff-regdate1">
+					<type>d:date</type>
+				</property>
+				<!-- Номер дела в суде 1-ой инстанции -->
+				<property name="mgs:admoff-caseid1">
+					<type>d:text</type>
+				</property>
+				<!-- Суд в 1-ой инстанции -->
+				<property name="mgs:admoff-court1">
+					<type>d:text</type>
+				</property>
+				<!-- Судья в 1-ой инстанции -->
+				<property name="mgs:admoff-judge">
+					<type>d:text</type>
+				</property>
+				<!-- Решение в суде 1-ой инстанции -->
+				<property name="mgs:admoff-res1">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения в суде 1-ой инстанции -->
+				<property name="mgs:admoff-resbase1">
+					<type>d:text</type>
+				</property>
+				<!-- Наказание -->
+				<property name="mgs:admoff-judgment1">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС в суде 1-ой инстанции -->
+				<property name="mgs:admoff-link1">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Дело об административном правонарушении - 1-й пересмотр -->
+		<type name="mgs:admoffcase2">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор дела в ССД при 1-м пересмотре -->
+				<property name="mgs:admoff-ssduid2">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации при 1-м пересмотре -->
+				<property name="mgs:admoff-regdate2">
+					<type>d:date</type>
+				</property>
+				<!-- Номер дела при 1-м пересмотре -->
+				<property name="mgs:admoff-caseid2">
+					<type>d:text</type>
+				</property>
+				<!-- Суд при 1-м пересмотре -->
+				<property name="mgs:admoff-court2">
+					<type>d:text</type>
+				</property>
+				<!-- Судья при 1-м пересмотре -->
+				<property name="mgs:admoff-judge2">
+					<type>d:text</type>
+				</property>
+				<!-- Решение при 1-м пересмотре -->
+				<property name="mgs:admoff-res2">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения при 1-м пересмотре -->
+				<property name="mgs:admoff-resbase2">
+					<type>d:text</type>
+				</property>
+				<!-- Наказание -->
+				<property name="mgs:admoff-judgment2">
+					<type>d:text</type>
+				</property>
+				<!-- Решение надзора по решению суда 1-го пересмотра -->
+				<property name="mgs:admoff-casresforres2">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения надзора по решению 1-го пересмотра -->
+				<property name="mgs:admoff-casresbaseforres2">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС при 1-м пересмотре -->
+				<property name="mgs:admoff-link2">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Дело об административном правонарушении - 2-й пересмотр -->
+		<type name="mgs:admoffcase3">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор дела в ССД при 2-м пересмотре -->
+				<property name="mgs:admoff-ssduid3">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации при 2-м пересмотре -->
+				<property name="mgs:admoff-regdate3">
+					<type>d:date</type>
+				</property>
+				<!-- Номер дела при 2-м пересмотре -->
+				<property name="mgs:admoff-caseid3">
+					<type>d:text</type>
+				</property>
+				<!-- Суд при 2-м пересмотре -->
+				<property name="mgs:admoff-court3">
+					<type>d:text</type>
+				</property>
+				<!-- Судья при 2-м пересмотре -->
+				<property name="mgs:admoff-judge3">
+					<type>d:text</type>
+				</property>
+				<!-- Решение при 2-м пересмотре -->
+				<property name="mgs:admoff-res3">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения при 2-м пересмотре -->
+				<property name="mgs:admoff-resbase3">
+					<type>d:text</type>
+				</property>
+				<!-- Наказание -->
+				<property name="mgs:admoff-judgment3">
+					<type>d:text</type>
+				</property>
+				<!-- Решение надзора по решению суда 2-го пересмотра -->
+				<property name="mgs:admoff-casresforres3">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения надзора по решению 2-го пересмотра -->
+				<property name="mgs:admoff-casresbaseforres3">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС при 2-м пересмотре -->
+				<property name="mgs:admoff-link3">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Дело об административном правонарушении - надзор -->
+		<type name="mgs:admoffcase4">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор дела в ССД при надзоре -->
+				<property name="mgs:admoff-ssduid4">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации при надзоре -->
+				<property name="mgs:admoff-regdate4">
+					<type>d:date</type>
+				</property>
+				<!-- Номер дела при надзоре -->
+				<property name="mgs:admoff-caseid4">
+					<type>d:text</type>
+				</property>
+				<!-- Судья при надзоре -->
+				<property name="mgs:admoff-judge4">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС при надзоре -->
+				<property name="mgs:admoff-link4">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+
+		<!-- Административное дело -->
+		<type name="mgs:admincase">
+			<title>Административное дело</title>
+			<parent>mgs:case</parent>
+			<properties>
+				<property name="mgs:admin-category">
+					<title>Категория дела по основному требованию</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:admin-type">
+					<title>Тип производства</title>
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:admin-type-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>По делам, возникающим из публичных правоотношений</value>
+									<value>Исковое</value>
+									<value>Приказное</value>
+									<value>Особое</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<!-- Сущность основного требования -->
+				<property name="mgs:admin-substance">
+					<type>d:text</type>
+				</property>
+				<!-- Дата вступления в силу -->
+				<property name="mgs:admin-effective-date">
+					<type>d:date</type>
+				</property>
+				<!-- Текущая инстанция -->
+				<property name="mgs:admin-current">
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:admin-current-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>1-я инстанция</value>
+									<value>2-я инстанция</value>
+									<value>3-я инстанция</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<!-- Уникальный идентификатор дела в ССД в суде 1-ой инстанции -->
+				<property name="mgs:admin-ssduid1">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 1-ой инстанции -->
+				<property name="mgs:admin-regdate1">
+					<type>d:date</type>
+				</property>
+				<!-- Номер дела в суде 1-ой инстанции -->
+				<property name="mgs:admin-caseid1">
+					<type>d:text</type>
+				</property>
+				<!-- Суд в 1-ой инстанции -->
+				<property name="mgs:admin-court1">
+					<type>d:text</type>
+				</property>
+				<!-- Первичный документ -->
+				<property name="mgs:admin-primary1">
+					<type>d:boolean</type>
+				</property>
+				<!-- Дата решения суда 1-ой инстанции -->
+				<property name="mgs:admin-resdate1">
+					<type>d:date</type>
+				</property>
+				<!-- Решение в суде 1-ой инстанции -->
+				<property name="mgs:admin-res1">
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:admin-res1-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>1</value>
+									<value>2</value>
+									<value>3</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<!-- Основание решения в суде 1-ой инстанции -->
+				<property name="mgs:admin-resbase1">
+					<type>d:text</type>
+				</property>
+				<!-- Решение кассационной инстанции по решению суда 1-ой инстанции -->
+				<property name="mgs:admin-casresforres1">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения кассационной инстанции по решению суда 1-ой инстанции -->
+				<property name="mgs:admin-casresbaseforres1">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС в суде 1-ой инстанции -->
+				<property name="mgs:admin-link1">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Административное дело - 2-ая инстанция -->
+		<type name="mgs:admincase2">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор дела в ССД в суде 2-ой инстанции -->
+				<property name="mgs:admin-ssduid2">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 2-ой инстанции -->
+				<property name="mgs:admin-regdate2">
+					<type>d:date</type>
+				</property>
+				<!-- Номер дела в суде 2-ой инстанции -->
+				<property name="mgs:admin-caseid2">
+					<type>d:text</type>
+				</property>
+				<!-- Суд во 2-ой инстанции -->
+				<property name="mgs:admin-court2">
+					<type>d:text</type>
+				</property>
+				<!-- Дата решения суда 2-ой инстанции -->
+				<property name="mgs:admin-resdate2">
+					<type>d:date</type>
+				</property>
+				<!-- Решение в суде 2-ой инстанции -->
+				<property name="mgs:admin-res2">
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:admin-res2-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>1</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<!-- Основание решения в суде 2-ой инстанции -->
+				<property name="mgs:admin-resbase2">
+					<type>d:text</type>
+				</property>
+				<!-- Решение кассационной инстанции по решению суда 2-ой инстанции -->
+				<property name="mgs:admin-casresforres2">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения кассационной инстанции по решению суда 2-ой инстанции -->
+				<property name="mgs:admin-casresbaseforres2">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС в суде 2-ой инстанции -->
+				<property name="mgs:admin-link2">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Административное дело - 3-я инстанция -->
+		<type name="mgs:admincase3">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор дела в ССД в суде 3-ей инстанции -->
+				<property name="mgs:admin-ssduid3">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 3-ей инстанции -->
+				<property name="mgs:admin-regdate3">
+					<type>d:date</type>
+				</property>
+				<!-- Номер дела в суде 3-ей инстанции -->
+				<property name="mgs:admin-caseid3">
+					<type>d:text</type>
+				</property>
+				<!-- Суд во 3-ей инстанции -->
+				<property name="mgs:admin-court3">
+					<type>d:text</type>
+				</property>
+				<!-- Дата решения суда 3-ей инстанции -->
+				<property name="mgs:admin-resdate3">
+					<type>d:date</type>
+				</property>
+				<!-- Ссылка на АИС в суде 3-ей инстанции -->
+				<property name="mgs:admin-link3">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+
+		<!-- Материалы по Гражданскому делу -->
+		<type name="mgs:matcivil">
+			<title>Материалы по Гражданскому делу</title>
+			<parent>mgs:case</parent>
+			<properties>
+				<property name="mgs:matcivil-submitter">
+					<title>Податель материала</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:matcivil-person">
+					<title>ФИО лица, относительно которого подан материал</title>
+					<type>d:text</type>
+				</property>
+				<!-- Уникальный идентификатор материала в ССД в суде 1-ой инстанции -->
+				<property name="mgs:matcivil-ssduid1">
+					<type>d:text</type>
+				</property>
+				<!-- Номер материала в суде 1-ой инстанции -->
+				<property name="mgs:matcivil-caseid1">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации материала в суде 1-ой инстанции -->
+				<property name="mgs:matcivil-regdate1">
+					<type>d:date</type>
+				</property>
+				<!-- Суд в 1-ой инстанции -->
+				<property name="mgs:matcivil-court1">
+					<type>d:text</type>
+				</property>
+				<!-- Дата решения суда 1-ой инстанции -->
+				<property name="mgs:matcivil-resdate1">
+					<type>d:date</type>
+				</property>
+				<!-- Решение в суде 1-ой инстанции -->
+				<property name="mgs:matcivil-res1">
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:matcivil-res1-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Отказано</value>
+									<value>Удовлетворено</value>
+									<value>Удовлетворено частично</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<!-- Основание решения в суде 1-ой инстанции -->
+				<property name="mgs:matcivil-resbase1">
+					<type>d:text</type>
+				</property>
+				<!-- Решение кассационной инстанции по решению суда 1-ой инстанции -->
+				<property name="mgs:matcivil-casresforres1">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения кассационной инстанции по решению суда 1-ой инстанции -->
+				<property name="mgs:matcivil-casresbaseforres1">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС в суде 1-ой инстанции -->
+				<property name="mgs:matcivil-link1">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Материалы по Гражданскому делу - 2-ая инстанция -->
+		<type name="mgs:matcivil2">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор материала в ССД в суде 2-ой инстанции -->
+				<property name="mgs:matcivil-ssduid2">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 2-ой инстанции -->
+				<property name="mgs:matcivil-regdate2">
+					<type>d:date</type>
+				</property>
+				<!-- Номер материала в суде 2-ой инстанции -->
+				<property name="mgs:matcivil-caseid2">
+					<type>d:text</type>
+				</property>
+				<!-- Суд во 2-ой инстанции -->
+				<property name="mgs:matcivil-court2">
+					<type>d:text</type>
+				</property>
+				<!-- Дата решения суда 2-ой инстанции -->
+				<property name="mgs:matcivil-resdate2">
+					<type>d:date</type>
+				</property>
+				<!-- Решение в суде 2-ой инстанции -->
+				<property name="mgs:matcivil-res2">
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:matcivil-res2-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>1</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<!-- Основание решения в суде 2-ой инстанции -->
+				<property name="mgs:matcivil-resbase2">
+					<type>d:text</type>
+				</property>
+				<!-- Решение кассационной инстанции по решению суда 2-ой инстанции -->
+				<property name="mgs:matcivil-casresforres2">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения кассационной инстанции по решению суда 2-ой инстанции -->
+				<property name="mgs:matcivil-casresbaseforres2">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС в суде 2-ой инстанции -->
+				<property name="mgs:matcivil-link2">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Материалы по Гражданскому делу - 3-я инстанция -->
+		<type name="mgs:matcivil3">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор материала в ССД в суде 3-ей инстанции -->
+				<property name="mgs:matcivil-ssduid3">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 3-ей инстанции -->
+				<property name="mgs:matcivil-regdate3">
+					<type>d:date</type>
+				</property>
+				<!-- Номер материала в суде 3-ей инстанции -->
+				<property name="mgs:matcivil-caseid3">
+					<type>d:text</type>
+				</property>
+				<!-- Суд во 3-ей инстанции -->
+				<property name="mgs:matcivil-court3">
+					<type>d:text</type>
+				</property>
+				<!-- Дата решения суда 3-ей инстанции -->
+				<property name="mgs:matcivil-resdate3">
+					<type>d:date</type>
+				</property>
+				<!-- Ссылка на АИС в суде 3-ей инстанции -->
+				<property name="mgs:matcivil-link3">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+
+		<!-- Материалы по Уголовному делу -->
+		<type name="mgs:matcriminal">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Тип материала -->
+				<property name="mgs:matcriminal-type">
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:matcriminal-type-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Представление</value>
+									<value>Жалоба по уголовному делу</value>
+									<value>Ходатайство</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<property name="mgs:matcriminal-submitter">
+					<title>Податель</title>
+					<type>d:text</type>
+				</property>
+				<!-- Орган, на который подается жалоба -->
+				<property name="mgs:matcriminal-entity">
+					<type>d:text</type>
+				</property>
+				<!-- Категория материала -->
+				<property name="mgs:matcriminal-category">
+					<type>d:text</type>
+				</property>
+				<!-- Уникальный идентификатор материала в ССД в суде 1-ой инстанции -->
+				<property name="mgs:matcriminal-ssduid1">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 1-ой инстанции -->
+				<property name="mgs:matcriminal-regdate1">
+					<type>d:date</type>
+				</property>
+				<!-- Номер материала в суде 1-ой инстанции -->
+				<property name="mgs:matcriminal-caseid1">
+					<type>d:text</type>
+				</property>
+				<!-- Суд в 1-ой инстанции -->
+				<property name="mgs:matcriminal-court1">
+					<type>d:text</type>
+				</property>
+				<!-- Решение в суде 1-ой инстанции -->
+				<property name="mgs:matcriminal-res1">
+					<type>d:text</type>
+				</property>
+				<!-- Основание по решению в суде 1-ой инстанции -->
+				<property name="mgs:matcriminal-resbase1">
+					<type>d:text</type>
+				</property>
+				<!-- Решение кассационной инстанции по решению суда 1-ой инстанции -->
+				<property name="mgs:matcriminal-casresforres1">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения кассационной инстанции по решению суда 1-ой инстанции -->
+				<property name="mgs:matcriminal-casresbaseforres1">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС в суде 1-ой инстанции -->
+				<property name="mgs:matcriminal-link1">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Материалы по Уголовному делу - 2-ая инстанция -->
+		<type name="mgs:matcriminal2">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор материала в ССД в суде 2-ой инстанции -->
+				<property name="mgs:matcriminal-ssduid2">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 2-ой инстанции -->
+				<property name="mgs:matcriminal-regdate2">
+					<type>d:date</type>
+				</property>
+				<!-- Номер материала в суде 2-ой инстанции -->
+				<property name="mgs:matcriminal-caseid2">
+					<type>d:text</type>
+				</property>
+				<!-- Суд во 2-ой инстанции -->
+				<property name="mgs:matcriminal-court2">
+					<type>d:text</type>
+				</property>
+				<!-- Решение в суде 2-ой инстанции -->
+				<property name="mgs:matcriminal-res2">
+					<type>d:text</type>
+				</property>
+				<!-- Основание по решению в суде 2-ой инстанции -->
+				<property name="mgs:matcriminal-resbase2">
+					<type>d:text</type>
+				</property>
+				<!-- Решение кассационной инстанции по решению суда 2-ой инстанции -->
+				<property name="mgs:matcriminal-casresforres2">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения кассационной инстанции по решению суда 2-ой инстанции -->
+				<property name="mgs:matcriminal-casresbaseforres2">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС в суде 2-ой инстанции -->
+				<property name="mgs:matcriminal-link2">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Материалы по Уголовному делу - 3-я инстанция -->
+		<type name="mgs:matcriminal3">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор дела в ССД в суде 3-ей инстанции -->
+				<property name="mgs:matcriminal-ssduid3">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 3-ей инстанции -->
+				<property name="mgs:matcriminal-regdate3">
+					<type>d:date</type>
+				</property>
+				<!-- Номер материала в суде 3-ей инстанции -->
+				<property name="mgs:matcriminal-caseid3">
+					<type>d:text</type>
+				</property>
+				<!-- Суд в 3-ей инстанции -->
+				<property name="mgs:matcriminal-court3">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС в суде 3-ей инстанции -->
+				<property name="mgs:matcriminal-link3">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Материал по делу об административном правонарушении -->
+		<type name="mgs:matadmoff">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Категория материала -->
+				<property name="mgs:matadmoff-category">
+					<type>d:text</type>
+				</property>
+				<property name="mgs:matadmoff-submitter">
+					<title>Податель</title>
+					<type>d:text</type>
+				</property>
+				<!-- ФИО лица, относительно которого подан материал -->
+				<property name="mgs:matadmoff-person">
+					<type>d:text</type>
+				</property>
+				<!-- Сущность -->
+				<property name="mgs:matadmoff-substance">
+					<type>d:text</type>
+				</property>
+				<!-- Орган досудебной подготовки -->
+				<property name="mgs:matadmoff-pretrial">
+					<type>d:text</type>
+				</property>
+				<!-- Статья КоАП -->
+				<property name="mgs:matadmoff-koap">
+					<type>d:text</type>
+				</property>
+				<!-- Уникальный идентификатор материала в ССД в суде 1-ой инстанции -->
+				<property name="mgs:matadmoff-ssduid1">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации в суде 1-ой инстанции -->
+				<property name="mgs:matadmoff-regdate1">
+					<type>d:date</type>
+				</property>
+				<!-- Номер материала в суде 1-ой инстанции -->
+				<property name="mgs:matadmoff-caseid1">
+					<type>d:text</type>
+				</property>
+				<!-- Суд в 1-ой инстанции -->
+				<property name="mgs:matadmoff-court1">
+					<type>d:text</type>
+				</property>
+				<!-- Судья в 1-ой инстанции -->
+				<property name="mgs:matadmoff-judge">
+					<type>d:text</type>
+				</property>
+				<!-- Решение в суде 1-ой инстанции -->
+				<property name="mgs:matadmoff-res1">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения в суде 1-ой инстанции -->
+				<property name="mgs:matadmoff-resbase1">
+					<type>d:text</type>
+				</property>
+				<!-- Решение надзора по решению суда 1-ой инстанции -->
+				<property name="mgs:matadmoff-casresforres1">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения надзора по решению суда 1-ой инстанции -->
+				<property name="mgs:matadmoff-casresbaseforres1">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС в суде 1-ой инстанции -->
+				<property name="mgs:matadmoff-link1">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Материалы по делу об административном правонарушении - 1-й пересмотр -->
+		<type name="mgs:matadmoff2">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор материала в ССД при 1-м пересмотре -->
+				<property name="mgs:matadmoff-ssduid2">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации при 1-м пересмотре -->
+				<property name="mgs:matadmoff-regdate2">
+					<type>d:date</type>
+				</property>
+				<!-- Номер материала при 1-м пересмотре -->
+				<property name="mgs:matadmoff-caseid2">
+					<type>d:text</type>
+				</property>
+				<!-- Суд при 1-м пересмотре -->
+				<property name="mgs:matadmoff-court2">
+					<type>d:text</type>
+				</property>
+				<!-- Судья при 1-м пересмотре -->
+				<property name="mgs:matadmoff-judge2">
+					<type>d:text</type>
+				</property>
+				<!-- Решение при 1-м пересмотре -->
+				<property name="mgs:matadmoff-res2">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения при 1-м пересмотре -->
+				<property name="mgs:matadmoff-resbase2">
+					<type>d:text</type>
+				</property>
+				<!-- Решение надзора по решению суда 1-го пересмотра -->
+				<property name="mgs:matadmoff-casresforres2">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения надзора по решению 1-го пересмотра -->
+				<property name="mgs:matadmoff-casresbaseforres2">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС при 1-м пересмотре -->
+				<property name="mgs:matadmoff-link2">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Дело об административном правонарушении - 2-й пересмотр -->
+		<type name="mgs:matadmoff3">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор материала в ССД при 2-м пересмотре -->
+				<property name="mgs:matadmoff-ssduid3">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации при 2-м пересмотре -->
+				<property name="mgs:matadmoff-regdate3">
+					<type>d:date</type>
+				</property>
+				<!-- Номер материала при 2-м пересмотре -->
+				<property name="mgs:matadmoff-caseid3">
+					<type>d:text</type>
+				</property>
+				<!-- Суд при 2-м пересмотре -->
+				<property name="mgs:matadmoff-court3">
+					<type>d:text</type>
+				</property>
+				<!-- Судья при 2-м пересмотре -->
+				<property name="mgs:matadmoff-judge3">
+					<type>d:text</type>
+				</property>
+				<!-- Решение при 2-м пересмотре -->
+				<property name="mgs:matadmoff-res3">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения при 2-м пересмотре -->
+				<property name="mgs:matadmoff-resbase3">
+					<type>d:text</type>
+				</property>
+				<!-- Решение надзора по решению суда 2-го пересмотра -->
+				<property name="mgs:matadmoff-casresforres3">
+					<type>d:text</type>
+				</property>
+				<!-- Основание решения надзора по решению 2-го пересмотра -->
+				<property name="mgs:matadmoff-casresbaseforres3">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС при 2-м пересмотре -->
+				<property name="mgs:matadmoff-link3">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<!-- Материалы по делу об административном правонарушении - надзор -->
+		<type name="mgs:matadmoff4">
+			<parent>mgs:case</parent>
+			<properties>
+				<!-- Уникальный идентификатор материала в ССД при надзоре -->
+				<property name="mgs:matadmoff-ssduid4">
+					<type>d:text</type>
+				</property>
+				<!-- Дата регистрации при надзоре -->
+				<property name="mgs:matadmoff-regdate4">
+					<type>d:date</type>
+				</property>
+				<!-- Номер дела при надзоре -->
+				<property name="mgs:matadmoff-caseid4">
+					<type>d:text</type>
+				</property>
+				<!-- Судья при надзоре -->
+				<property name="mgs:matadmoff-judge4">
+					<type>d:text</type>
+				</property>
+				<!-- Ссылка на АИС при надзоре -->
+				<property name="mgs:matadmoff-link4">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+
+		<type name="mgs:document">
+			<parent>cm:folder</parent>
+			<properties>
+				<!--property>cm:name - Название - наследуем</property-->
+				<property name="mgs:document-id">
+					<title>Уникальный идентификатор документа в ССД</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:document-court">
+					<title>Суд, инициирующий документ (податель)</title>
+					<type>d:text</type>
+				</property>
+				<!-- Тип документа -->
+				<property name="mgs:document-type">
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:document-type-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Ходатайство</value>
+									<value>Решение</value>
+									<value>Приговор</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<property name="mgs:document-date">
+					<title>Дата</title>
+					<type>d:date</type>
+				</property>
+				<property name="mgs:document-text">
+					<title>Текст</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:document-comment">
+					<title>Комментарий</title>
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<type name="mgs:file">
+			<parent>cm:content</parent>
+			<properties>
+				<!--property>cm:name - Название - наследуем</property-->
+				<property name="mgs:file-kind">
+					<title>Вид документа</title>
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:file-kind-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>документ-оригинал</value>
+									<value>документ для публикации</value>
+									<value>документ-сканированный образ</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+			</properties>
+		</type>
+
+		<type name="mgs:table-participants">
+			<title>Участники</title>
+			<parent>cm:content</parent>
+			<properties>
+				<property name="mgs:table-participants-category">
+					<title>Категория</title>
+					<type>d:text</type>
+					<constraints>
+						<constraint name="mgs:table-participants-category-list" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>Истец</value>
+									<value>Ответчик</value>
+									<value>Другое</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+				<property name="mgs:table-participants-name">
+					<title>ФИО / Наименование юл. лица</title>
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<type name="mgs:table-judges">
+			<title>Судьи</title>
+			<parent>cm:content</parent>
+			<properties>
+				<property name="mgs:table-judges-name">
+					<title>ФИО судьи</title>
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<type name="mgs:table-accused">
+			<title>Обвиняемые</title>
+			<parent>cm:content</parent>
+			<properties>
+				<property name="mgs:table-accused-name">
+					<title>ФИО</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-indictment">
+					<title>Статьи по обвинению</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-preventive-measure">
+					<title>Мера пресечения</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-res1">
+					<title>Решение суда 1-й инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-resbase1">
+					<title>Основание решения суда 1-й инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-judgment1">
+					<title>Тип наказания</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-judgmentsize1">
+					<title>Размер (срок, сумма) наказания в суде 1-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-conventionality1">
+					<title>Признак условности наказания</title>
+					<type>d:boolean</type>
+				</property>
+				<property name="mgs:table-accused-indictment1">
+					<title>Статья по постановлению суда 1-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-casresforres1">
+					<title>Решение кассационной инстанции по решению суда 1-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-casresbaseforres1">
+					<title>Основание решения кассационной инстанции по решению суда 1-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-res2">
+					<title>Решение суда 2-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-resbase2">
+					<title>Основание решения 2-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-judgment2">
+					<title>Тип наказания в суде 2-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-judgementsize2">
+					<title>Размер (срок, сумма) наказания в суде 2-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-conventionality2">
+					<title>Признак условности наказания во 2-ой инстанции</title>
+					<type>d:boolean</type>
+				</property>
+				<property name="mgs:table-accused-indictment2">
+					<title>Статья по постановлению суда 2-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-casresforres2">
+					<title>Решение кассационной инстанции по решению суда 2-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-accused-casresbaseforres2">
+					<title>Основание решения кассационной инстанции по решению суда 2-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<type name="mgs:table-other-participants">
+			<title>Прочие участники</title>
+			<parent>cm:content</parent>
+			<properties>
+				<property name="mgs:table-other-participants-category">
+					<title>Категория</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-other-participants-name">
+					<title>ФИО</title>
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+		<type name="mgs:table-filedagainst">
+			<title>Подано в отношении</title>
+			<parent>cm:content</parent>
+			<properties>
+				<property name="mgs:table-filedagainst-name">
+					<title>ФИО</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-filedagainst-indictment">
+					<title>Статьи по обвинению</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-filedagainst-preventive-measure">
+					<title>Мера пресечения</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-filedagainst-res1">
+					<title>Решение суда 1-й инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-filedagainst-resbase1">
+					<title>Основание решения суда 1-й инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-filedagainst-casresforres1">
+					<title>Решение кассационной инстанции по решению суда 1-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-filedagainst-casresbaseforres1">
+					<title>Основание решения кассационной инстанции по решению суда 1-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-filedagainst-res2">
+					<title>Решение суда 2-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-filedagainst-resbase2">
+					<title>Основание решения 2-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-filedagainst-casresforres2">
+					<title>Решение кассационной инстанции по решению суда 2-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+				<property name="mgs:table-filedagainst-casresbaseforres2">
+					<title>Основание решения кассационной инстанции по решению суда 2-ой инстанции</title>
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+	</types>
+
+</model>
