@@ -1,0 +1,14 @@
+<objects>
+    <object id="folder">
+        <type>{http://www.alfresco.org/model/content/1.0}folder</type>
+    </object>
+
+    <object id="document">
+        <type>{http://www.alfresco.org/model/content/1.0}content</type>
+        <content>
+            <format>docx</format>
+            <minTextSize>1024</minTextSize>
+            <maxTextSize>10240</maxTextSize>
+        </content>
+    </object>
+</objects>

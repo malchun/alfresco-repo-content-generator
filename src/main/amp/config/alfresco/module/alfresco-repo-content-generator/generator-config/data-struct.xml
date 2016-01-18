@@ -1,0 +1,14 @@
+<data store="workspace://SpacesStore" path="Company Home/Test folder/Test1">
+    <node object="folder" count="10" name="Суд">
+        <node object="folder" count="100" name="Дело">
+            <node object="folder" count="3" name="Рассмотрение">
+                <node object="folder" count="3" name="AAAA">
+                    <node object="document" count="2" name="BBB"/>
+                    <node object="document" count="2" name="CCCCC"/>
+                </node>
+            </node>
+        </node>
+    </node>
+    <node object="document" count="1" name="aergheargh">
+    </node>
+</data>
