@@ -6,7 +6,16 @@
     <object id="document">
         <type>{http://www.alfresco.org/model/content/1.0}content</type>
         <content>
-            <format>docx</format>
+            <format>txt</format>
+            <minTextSize>1024</minTextSize>
+            <maxTextSize>10240</maxTextSize>
+        </content>
+    </object>
+
+    <object id="document-mgs">
+        <type>{http://www.mos-gorsud.ru/models/basic}civilcase2</type>
+        <content>
+            <format>txt</format>
             <minTextSize>1024</minTextSize>
             <maxTextSize>10240</maxTextSize>
         </content>

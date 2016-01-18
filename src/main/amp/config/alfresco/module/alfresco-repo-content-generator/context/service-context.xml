@@ -33,6 +33,7 @@
         <property name="appliesFromVersion" value="0.1" />
         <property name="nodeService" ref="NodeService" />
         <property name="fileFolderService" ref="FileFolderService" />
+        <property name="dictionaryService" ref="DictionaryService" />
         <property name="contentService" ref="ContentService" />
         <property name="executeOnceOnly" value="false" />
         <property name="objectsConfig" value="${contentloader.objects-config-file}" />

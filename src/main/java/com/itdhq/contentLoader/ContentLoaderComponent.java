@@ -21,8 +21,11 @@ import org.alfresco.model.ContentModel;
 import org.alfresco.repo.content.MimetypeMap;
 import org.alfresco.repo.module.AbstractModuleComponent;
 import org.alfresco.repo.nodelocator.NodeLocatorService;
+import org.alfresco.service.cmr.dictionary.DictionaryService;
 import org.alfresco.service.cmr.model.FileFolderService;
 import org.alfresco.service.cmr.repository.*;
+import org.alfresco.service.namespace.QName;
+import org.alfresco.util.Pair;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -36,6 +39,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -57,7 +61,7 @@ public class ContentLoaderComponent
     private NodeService nodeService;
     private FileFolderService fileFolderService;
     private ContentService contentService;
-    private NodeLocatorService nodeLocatorService;
+    private DictionaryService dictionaryService;
     private String objectsConfig;
     private String dataStruct;
 
@@ -68,12 +72,10 @@ public class ContentLoaderComponent
     public void setContentService(ContentService contentService) {
         this.contentService = contentService;
     }
+    public void setDictionaryService(DictionaryService dictionaryService) { this.dictionaryService = dictionaryService; }
     public void setObjectsConfig(String objectsConfig) { this.objectsConfig = objectsConfig; }
     public void setDataStruct(String dataStruct) { this.dataStruct = dataStruct; }
 
-    public void setNodeLocatorService(NodeLocatorService nodeLocatorService) {
-        this.nodeLocatorService = nodeLocatorService;
-    }
 
     /**
      * Start method
@@ -249,12 +251,9 @@ public class ContentLoaderComponent
             return res;
         }
 
-        /*
-        Map<QName, Serializable> props = new HashMap<>(1);
-        props.put(ContentModel.PROP_NAME, cmname);
-        */
 
         res = fileFolderService.create(parent, cmname, object.getType()).getNodeRef();
+        fillNodeProperrties(res);
 
         // TODO here will be many types
         if (object.hasContent()) {
@@ -277,5 +276,18 @@ public class ContentLoaderComponent
     private String genPlainText(int size)
     {
         return RandomStringUtils.randomAlphanumeric(size);
+    }
+
+    /**
+     *
+     */
+    private void fillNodeProperrties(NodeRef node)
+    {
+        Map<QName, Serializable> props = nodeService.getProperties(node);
+        for(Map.Entry<QName, Serializable> prop: props.entrySet()) {
+            logger.debug(prop.getKey().toString() + "  :  (" + prop.getValue().getClass() + ") " + prop.getValue().toString());
+            //logger.debug(dictionaryService.getProperties());
+        }
+        logger.debug(props);
     }
 }

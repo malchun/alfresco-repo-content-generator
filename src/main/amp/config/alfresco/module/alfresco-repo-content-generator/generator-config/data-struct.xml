@@ -1,6 +1,7 @@
 <data store="workspace://SpacesStore" path="Company Home/Test folder">
 
-    <node object="folder" count="1" name="Суд">
+    <node object="folder" count="10" name="Суд">
+        <!--
         <node object="folder" count="100" name="Дело">
             <node object="folder" count="3" name="Рассмотрение">
                 <node object="folder" count="3" name="AAAA">
@@ -9,7 +10,8 @@
                 </node>
             </node>
         </node>
-        <node object="document" count="1" name="aergheargh">
+        -->
+        <node object="document-mgs" count="5" name="aergheargh">
         </node>
     </node>
 </data>
