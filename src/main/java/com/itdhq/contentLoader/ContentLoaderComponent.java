@@ -131,6 +131,9 @@ public class ContentLoaderComponent
                 logger.debug(nodeService.getProperty(root_folder, ContentModel.PROP_NAME));
                 for (String i: path) {
                     logger.debug("cm:Name " + i);
+                    // TODO: it will not work, if the first path component is missing.
+                    // Children of store root node should created with nodeService, not fileFolderService 
+                    // since store root requires custom association type for children.
                     root_folder = this.createDocument(root_folder, i, objects.get("root"));
                     logger.debug(nodeService.getProperty(root_folder, ContentModel.PROP_NAME));
                 }
