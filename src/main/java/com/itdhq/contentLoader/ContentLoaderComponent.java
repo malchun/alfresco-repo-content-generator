@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import org.alfresco.repo.security.authentication.AuthenticationUtil;
 
 /**
  * A basic component that will be started for this module.
@@ -87,8 +88,13 @@ public class ContentLoaderComponent
         objects = (new ObjectsConfigParser(objectsConfig)).getObjects();
         logger.debug(objects.toString());
 
-
-        this.parseRootNode(dataStruct);
+        AuthenticationUtil.runAsSystem(new AuthenticationUtil.RunAsWork<Void>() {
+            @Override
+            public Void doWork() throws Exception {
+                parseRootNode(dataStruct);
+                return null;
+            }
+        });
 /*
         logger.debug(nodeService.getProperty(test_folder, ContentModel.PROP_NAME));
         for (int i = 0; i < 20; ++i) {
