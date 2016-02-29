@@ -47,6 +47,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import org.alfresco.repo.security.authentication.AuthenticationUtil;
 
 /**
  * A basic component that will be started for this module.
@@ -103,24 +104,14 @@ public class ContentLoaderComponent
         objects = (new ObjectsConfigParser(objectsConfig)).getObjects();
         logger.debug(objects.toString());
 
-        /*
-        for (QName i : dictionaryService.getAllModels()) {
-            for (ConstraintDefinition constraint : dictionaryService.getConstraints(i)) {
-                logger.debug(constraint.getConstraint().getShortName() + " " + constraint.getConstraint().getParameters());
-            }
-        }
-        */
 
-        for (QName i : dictionaryService.getAllDataTypes()) {
-            logger.debug("DataType: " + i.toString());
-            /*
-            for (QName j : dictionaryService.getAllProperties(i)) {
-                logger.debug(j); //+ dictionaryService.getConstraint(j).toString());
+        AuthenticationUtil.runAsSystem(new AuthenticationUtil.RunAsWork<Void>() {
+            @Override
+            public Void doWork() throws Exception {
+                parseRootNode(dataStruct);
+                return null;
             }
-            */
-        }
-
-        this.parseRootNode(dataStruct);
+        });
 /*
         logger.debug(nodeService.getProperty(test_folder, ContentModel.PROP_NAME));
         for (int i = 0; i < 20; ++i) {
@@ -157,6 +148,9 @@ public class ContentLoaderComponent
                 logger.debug(nodeService.getProperty(root_folder, ContentModel.PROP_NAME));
                 for (String i : path) {
                     logger.debug("cm:Name " + i);
+                    // TODO: it will not work, if the first path component is missing.
+                    // Children of store root node should created with nodeService, not fileFolderService 
+                    // since store root requires custom association type for children.
                     root_folder = this.createDocument(root_folder, i, objects.get("root"));
                     logger.debug(nodeService.getProperty(root_folder, ContentModel.PROP_NAME));
                 }
