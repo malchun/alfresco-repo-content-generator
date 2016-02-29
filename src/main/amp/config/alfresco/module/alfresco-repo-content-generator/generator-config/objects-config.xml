@@ -10,6 +10,9 @@
             <minTextSize>1024</minTextSize>
             <maxTextSize>10240</maxTextSize>
         </content>
+        <properies>
+            <property></property>
+        </properies>
     </object>
 
     <object id="document-mgs">

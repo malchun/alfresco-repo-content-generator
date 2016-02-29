@@ -19,15 +19,20 @@ package com.itdhq.contentLoader;
 import org.alfresco.error.AlfrescoRuntimeException;
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.content.MimetypeMap;
+import org.alfresco.repo.dictionary.constraint.ListOfValuesConstraint;
 import org.alfresco.repo.module.AbstractModuleComponent;
 import org.alfresco.repo.nodelocator.NodeLocatorService;
-import org.alfresco.service.cmr.dictionary.DictionaryService;
+import org.alfresco.service.cmr.dictionary.*;
 import org.alfresco.service.cmr.model.FileFolderService;
+import org.alfresco.service.cmr.model.FileInfo;
 import org.alfresco.service.cmr.repository.*;
 import org.alfresco.service.namespace.QName;
 import org.alfresco.util.Pair;
+import org.apache.commons.digester.annotations.rules.AttributeCallParam;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.james.mime4j.dom.datetime.DateTime;
 import org.apache.log4j.Logger;
+import org.springframework.util.PropertiesPersister;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -52,8 +57,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Maurizio Pillitu
  */
 public class ContentLoaderComponent
-        extends AbstractModuleComponent
-{
+        extends AbstractModuleComponent {
     private Logger logger = Logger.getLogger(ContentLoaderComponent.class);
 
     private Map<String, RepoObject> objects;
@@ -68,25 +72,53 @@ public class ContentLoaderComponent
     public void setNodeService(NodeService nodeService) {
         this.nodeService = nodeService;
     }
-    public void setFileFolderService(FileFolderService fileFolderService) { this.fileFolderService = fileFolderService; }
+
+    public void setFileFolderService(FileFolderService fileFolderService) {
+        this.fileFolderService = fileFolderService;
+    }
+
     public void setContentService(ContentService contentService) {
         this.contentService = contentService;
     }
-    public void setDictionaryService(DictionaryService dictionaryService) { this.dictionaryService = dictionaryService; }
-    public void setObjectsConfig(String objectsConfig) { this.objectsConfig = objectsConfig; }
-    public void setDataStruct(String dataStruct) { this.dataStruct = dataStruct; }
+
+    public void setDictionaryService(DictionaryService dictionaryService) {
+        this.dictionaryService = dictionaryService;
+    }
+
+    public void setObjectsConfig(String objectsConfig) {
+        this.objectsConfig = objectsConfig;
+    }
+
+    public void setDataStruct(String dataStruct) {
+        this.dataStruct = dataStruct;
+    }
 
 
     /**
      * Start method
      */
     @Override
-    protected void executeInternal() throws Throwable
-    {
+    protected void executeInternal() throws Throwable {
         logger.debug("ContentLoaderComponent");
         objects = (new ObjectsConfigParser(objectsConfig)).getObjects();
         logger.debug(objects.toString());
 
+        /*
+        for (QName i : dictionaryService.getAllModels()) {
+            for (ConstraintDefinition constraint : dictionaryService.getConstraints(i)) {
+                logger.debug(constraint.getConstraint().getShortName() + " " + constraint.getConstraint().getParameters());
+            }
+        }
+        */
+
+        for (QName i : dictionaryService.getAllDataTypes()) {
+            logger.debug("DataType: " + i.toString());
+            /*
+            for (QName j : dictionaryService.getAllProperties(i)) {
+                logger.debug(j); //+ dictionaryService.getConstraint(j).toString());
+            }
+            */
+        }
 
         this.parseRootNode(dataStruct);
 /*
@@ -101,10 +133,10 @@ public class ContentLoaderComponent
 
     /**
      * Init parsing method. Should be totally refactored.
+     *
      * @param file - path to config
      */
-    public void parseRootNode(String file) throws ParserConfigurationException, IOException, SAXException
-    {
+    public void parseRootNode(String file) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         File dataStructFile = new File(getClass().getClassLoader().getResource(file).getFile());
@@ -123,7 +155,7 @@ public class ContentLoaderComponent
                 List<String> path = Arrays.asList(tmpEl.getAttribute("path").split("/"));
                 root_folder = nodeService.getRootNode(spaces);
                 logger.debug(nodeService.getProperty(root_folder, ContentModel.PROP_NAME));
-                for (String i: path) {
+                for (String i : path) {
                     logger.debug("cm:Name " + i);
                     root_folder = this.createDocument(root_folder, i, objects.get("root"));
                     logger.debug(nodeService.getProperty(root_folder, ContentModel.PROP_NAME));
@@ -141,11 +173,11 @@ public class ContentLoaderComponent
 
     /**
      * Usual node parser
+     *
      * @param parent
      * @param node
      */
-    private void parseNode(NodeRef parent, Node node)
-    {
+    private void parseNode(NodeRef parent, Node node) {
         logger.debug("parseNode");
         if (Node.ELEMENT_NODE == node.getNodeType() && node.getNodeName().equals("node")) {
             Element tmpEl = (Element) node;
@@ -174,16 +206,16 @@ public class ContentLoaderComponent
 
     /**
      * Returns store by name or raises exception
+     *
      * @param name - name of store with protocol
      * @return StoreRef of store
-     * @exception if store not exist
+     * @throws if store not exist
      */
-    public StoreRef getStoreRefByName(String name)
-    {
+    public StoreRef getStoreRefByName(String name) {
         logger.debug("ContentLoaderComponent.getStoreRefByName");
         List<StoreRef> stores = nodeService.getStores();
         StoreRef spaces = null;
-        for (StoreRef i: stores) {
+        for (StoreRef i : stores) {
             if (i.toString().equals(name)) {
                 spaces = i;
                 break;
@@ -198,18 +230,18 @@ public class ContentLoaderComponent
 
     /**
      * Returns NodeRef by name or null if not exist
+     *
      * @param parent - parent node
      * @param cmname - name of target node
      * @return NodeRef or null
      */
-    public NodeRef getChildNodeRefByName(NodeRef parent, String cmname)
-    {
+    public NodeRef getChildNodeRefByName(NodeRef parent, String cmname) {
         logger.debug("getChildNodeRefByName");
         NodeRef res = null;
-        for (ChildAssociationRef child: nodeService.getChildAssocs(parent)) {
+        for (ChildAssociationRef child : nodeService.getChildAssocs(parent)) {
             NodeRef tmp = child.getChildRef();
             //logger.debug(nodeService.getProperty(tmp, ContentModel.PROP_NAME));
-            if(nodeService.getProperty(tmp, ContentModel.PROP_NAME).equals(cmname)) {
+            if (nodeService.getProperty(tmp, ContentModel.PROP_NAME).equals(cmname)) {
                 res = tmp;
                 break;
             }
@@ -219,12 +251,12 @@ public class ContentLoaderComponent
 
     /**
      * Creates subfolder if parent folder known. In case the subfolder is already exits - only returns NodeRef
+     *
      * @param parent - parent node
      * @param cmname - name of new folder
      * @return NodeRef of subfolder
      */
-    public NodeRef createSubFolderIfNotExist(NodeRef parent, String cmname)
-    {
+    public NodeRef createSubFolderIfNotExist(NodeRef parent, String cmname) {
         logger.debug("createSubFolderIfNotExist");
         NodeRef res = this.getChildNodeRefByName(parent, cmname);
         if (res == null) {
@@ -237,12 +269,12 @@ public class ContentLoaderComponent
 
     /**
      * Creates document. Most likely this function would be changed.
+     *
      * @param parent - parent node
      * @param cmname - new node name
      * @return NodeRef of new document
      */
-    public NodeRef createDocument(NodeRef parent, String cmname, RepoObject object)
-    {
+    public NodeRef createDocument(NodeRef parent, String cmname, RepoObject object) {
         logger.debug("createDocument");
 
         NodeRef res = this.getChildNodeRefByName(parent, cmname);
@@ -253,7 +285,8 @@ public class ContentLoaderComponent
 
 
         res = fileFolderService.create(parent, cmname, object.getType()).getNodeRef();
-        fillNodeProperrties(res);
+
+        fillNodeProperties(res);
 
         // TODO here will be many types
         if (object.hasContent()) {
@@ -270,24 +303,123 @@ public class ContentLoaderComponent
     /**
      * Plain Text generator
      * TODO find normal human-like text generator
+     *
      * @param size in chars
      * @return plain text (letters and numbers)
      */
-    private String genPlainText(int size)
-    {
+    private String genPlainText(int size) {
         return RandomStringUtils.randomAlphanumeric(size);
     }
 
     /**
-     *
+     * Here you can see a bit of magic!
      */
-    private void fillNodeProperrties(NodeRef node)
-    {
+    private void fillNodeProperties(NodeRef node) {
+        logger.debug("ContentLoaderComponent.fillNodeProperties");
         Map<QName, Serializable> props = nodeService.getProperties(node);
-        for(Map.Entry<QName, Serializable> prop: props.entrySet()) {
-            logger.debug(prop.getKey().toString() + "  :  (" + prop.getValue().getClass() + ") " + prop.getValue().toString());
-            //logger.debug(dictionaryService.getProperties());
+        Map<QName, PropertyDefinition> allProps = getAllTypeProperties(node);
+        Map<QName, PropertyDefinition> fillingProps = new HashMap<>();
+        for (Map.Entry<QName, PropertyDefinition> prop : allProps.entrySet())
+        {
+            if (!props.containsKey(prop.getKey())) {
+                fillingProps.put(prop.getKey(), prop.getValue());
+                if (!prop.getValue().getConstraints().isEmpty()) {
+                    logger.debug("Constraint types " + prop.getValue().getConstraints().get(0).getConstraint().getType() + "  "  + prop.getValue().getConstraints().get(0).getConstraint().getParameters());
+
+                }
+            }
         }
-        logger.debug(props);
+        for (Map.Entry<QName, PropertyDefinition> fillingProp: fillingProps.entrySet()) {
+            switch (fillingProp.getValue().getDataType().getName().toString())
+            {
+                case "{http://www.alfresco.org/model/dictionary/1.0}text":
+                    props.put(fillingProp.getKey(), genTextProperty(fillingProp.getValue()));
+                    logger.debug("New text property " + fillingProp.getKey() + "  " + genTextProperty(fillingProp.getValue()));
+                    break;
+                case "{http://www.alfresco.org/model/dictionary/1.0}datetime":
+                    props.put(fillingProp.getKey(), genDateTimeProperty(fillingProp.getValue(), 1000));
+                    logger.debug("New datetime property " + fillingProp.getKey() + "  " + genDateTimeProperty(fillingProp.getValue(), 1000));
+                    break;
+                case "{http://www.alfresco.org/model/dictionary/1.0}date":
+                    props.put(fillingProp.getKey(), genDateTimeProperty(fillingProp.getValue(), 1000));
+                    logger.debug("New date property " + fillingProp.getKey() + "  " + genDateTimeProperty(fillingProp.getValue(), 1000));
+                    break;
+                case "{http://www.alfresco.org/model/dictionary/1.0}long":
+                    props.put(fillingProp.getKey(), genLongProperty(fillingProp.getValue()));
+                    logger.debug("New long property " + fillingProp.getKey() + "  " + genLongProperty(fillingProp.getValue()));
+                    break;
+                case "{http://www.alfresco.org/model/dictionary/1.0}int":
+                    props.put(fillingProp.getKey(), genLongProperty(fillingProp.getValue()));
+                    logger.debug("New int property " + fillingProp.getKey() + "  " + genIntProperty(fillingProp.getValue(), 1000));
+                    break;
+            }
+        }
+        nodeService.setProperties(node, props);
+    }
+
+    public Map<QName, PropertyDefinition> getAllTypeProperties(NodeRef ref)
+    {
+        QName typeName = nodeService.getType(ref);
+        TypeDefinition type = dictionaryService.getType(typeName);
+        return getAllTypeProperties(type);
+    }
+
+    public Map<QName, PropertyDefinition> getAllTypeProperties(TypeDefinition type)
+    {
+        Map<QName, PropertyDefinition> results = new HashMap<>();
+
+        Map<QName, PropertyDefinition> properties = type.getProperties();
+        for (Map.Entry<QName, PropertyDefinition> entry : properties.entrySet())
+        {
+            PropertyDefinition prop = entry.getValue();
+            QName name = entry.getKey();
+            results.put(name, prop);
+        }
+
+        List<AspectDefinition> aspects = type.getDefaultAspects(true);
+        for (AspectDefinition def : aspects)
+        {
+            properties = def.getProperties();
+            for (Map.Entry<QName, PropertyDefinition> entry : properties.entrySet())
+            {
+                PropertyDefinition prop = entry.getValue();
+                QName name = entry.getKey();
+                results.put(name, prop);
+            }
+        }
+        return results;
+    }
+
+    private long genLongProperty(PropertyDefinition def)
+    {
+        return ThreadLocalRandom.current().nextLong();
+    }
+
+    private int genIntProperty(PropertyDefinition def, int max)
+    {
+        return ThreadLocalRandom.current().nextInt(max);
+    }
+
+    private Date genDateTimeProperty(PropertyDefinition def, int max)
+    {
+        //long t2 = t1 + 2 * 60 * 1000 + r.nextInt(60 * 1000) + 1;
+        return new Date(System.currentTimeMillis() + ThreadLocalRandom.current().nextInt());
+        //DateTime d2 = new DateTime(t2);
+
+    }
+
+    private String genTextProperty(PropertyDefinition def)
+    {
+        if (def.getConstraints().isEmpty()) {
+            return genPlainText(ThreadLocalRandom.current().nextInt(5, 100));
+        } else {
+            if (def.getConstraints().get(0).getConstraint().getType() == ListOfValuesConstraint.CONSTRAINT_TYPE) {
+                List<String> list = ((ListOfValuesConstraint)def.getConstraints().get(0).getConstraint()).getAllowedValues();
+                return list.get(ThreadLocalRandom.current().nextInt(list.size()));
+            }
+        }
+        return genPlainText(ThreadLocalRandom.current().nextInt(5, 100));
     }
 }
+
+

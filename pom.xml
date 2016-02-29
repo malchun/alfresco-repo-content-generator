@@ -64,6 +64,13 @@
             <groupId>${alfresco.groupId}</groupId>
             <artifactId>alfresco-repository</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.mifmif</groupId>
+            <artifactId>generex</artifactId>
+            <version>0.0.4</version>
+        </dependency>
+
     </dependencies>
 
     <profiles>
